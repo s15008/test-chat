@@ -1,0 +1,36 @@
+<h1>{{message_list.0.board_id}}</h1>
+
+<form id="messageForm" method="post" action="{% url 'post_message' message_list.0.board_id.id %}">
+    {% csrf_token %}
+    <textarea id="text" name="text" cols="30" rows="10"></textarea>
+    <button id="submitBtn">送信</button>
+</form>
+<div id="contents"></div>
+
+{% if message_list %}
+<ul id="message_list">
+    {% for message in message_list %}
+    <div class='message'>
+        <p>投稿時間 : {{ message.get_formated_pub_date }}</p>
+        <p>メッセージ : {{ message.message }}</p>
+    </div>
+    {% endfor %}
+</ul>
+{% else %}
+<p>No message are available.</p>
+{% endif %}
+
+
+<script src="https://code.jquery.com/jquery-3.2.1.min.js"
+    integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+    crossorigin="anonymous">
+</script>
+{% load static %}
+<link rel="stylesheet" type='text/css' href="{% static 'chats/style.css' %}">
+<script type="text/javascript" src="{% static 'chats/main.js' %}"></script>
+<script type="text/javascript">
+    var board_id = {{message_list.0.board_id.id}};
+    var user_id = 's15008';
+    var latest_message_pub_date = '{{message_list.0.get_formated_pub_date}}';
+    var latest_message_id = {{message_list.0.id}};
+</script>
